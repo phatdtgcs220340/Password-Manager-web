@@ -1,0 +1,11 @@
+spring:
+  application:
+    name : password-manager 
+  datasource:
+    url: jdbc:postgresql://localhost:15432/client-db
+    username: phatdo
+    password: bimatnha
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
