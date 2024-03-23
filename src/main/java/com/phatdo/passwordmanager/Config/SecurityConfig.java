@@ -1,6 +1,6 @@
 package com.phatdo.passwordmanager.Config;
 
-import com.phatdo.passwordmanager.User.UserService;
+import com.phatdo.passwordmanager.Entity.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/login/authenticate")
                         .usernameParameter("username")
                         .passwordParameter("password")
+                        .defaultSuccessUrl("/home",true)
                         .permitAll())
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(
