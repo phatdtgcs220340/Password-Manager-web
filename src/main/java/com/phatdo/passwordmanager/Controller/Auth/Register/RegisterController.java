@@ -1,6 +1,6 @@
 package com.phatdo.passwordmanager.Controller.Auth.Register;
 
-import com.phatdo.passwordmanager.User.UserService;
+import com.phatdo.passwordmanager.Entity.User.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +45,6 @@ public class RegisterController {
             return "redirect:/register?error";
         }
         log.info(String.valueOf(registerForm));
-        return "redirect:/auth/login";
+        return "redirect:/login";
     }
 }
