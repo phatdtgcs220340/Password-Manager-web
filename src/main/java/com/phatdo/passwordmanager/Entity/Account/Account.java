@@ -1,4 +1,4 @@
-package com.phatdo.passwordmanager.Entity.UserApplication;
+package com.phatdo.passwordmanager.Entity.Account;
 
 import com.phatdo.passwordmanager.Entity.Application.Application;
 import com.phatdo.passwordmanager.Entity.User.User;
@@ -9,16 +9,27 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class UserApplication implements Serializable {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "username")
+    private final String username;
+
+    @Column(name = "password")
+    private final String password;
+
+    @Column(name = "last_modified")
+    private final Timestamp lastModified;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -26,7 +37,7 @@ public class UserApplication implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "application_id")
-    private final Application application;
+    private Application application;
 
     @Override
     public int hashCode() {
