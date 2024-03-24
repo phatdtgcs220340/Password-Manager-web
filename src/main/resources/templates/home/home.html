@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/80b0eecad5.js" crossorigin="anonymous"></script>
+    <title>Home</title>
+</head>
+<body>
+    <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <span class="sr-only">Open sidebar</span>
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+        </svg>
+     </button>
+     
+     <aside id="sidebar-multi-level-sidebar" class="shadow-lg shadow-indigo-500 fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-600">
+            <a th:href="@{/}" class="w-full flex flex-wrap rounded-lg justify-center items-center p-2 px-1 mb-2 gap-1 hover:bg-gray-700">
+                <img class="h-12" th:src="@{/images/logo.png}" alt="logo">
+                <h1 class="text-xl font-semibold text-gray-50">Password Manager</h1>
+            </a>
+           <ul class="space-y-2 font-medium">
+              <li>
+                <button data-modal-target="create-modal" data-modal-toggle="create-modal" href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                    <i class="fa-solid fa-file-circle-plus fa-lg" style="color: #69b7f2;"></i>
+                    <span class="ms-3">New Application</span>
+                </button>
+                 
+              </li>
+              <li>
+                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                     <i class="fa-solid fa-list fa-lg" style="color: #69b7f2;"></i>
+                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Applications</span>
+                     <i class="fa-solid fa-caret-down fa-sm" style="color: #69b7f2;"></i>
+                 </button>
+                 <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                       <li class="list-item" th:each="item : ${application_list}">
+                          <a th:href="${item.url}" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:bg-gray-700">
+                              <i class="fa-solid fa-circle fa-2xs" style="color: #69b7f2;"></i>
+                              <span class="mx-4" th:text="${item.applicationName}"></span></a>
+                       </li>
+                 </ul>
+              </li>
+              <li>
+                 <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                     <i class="fa-solid fa-user fa-lg" style="color: #69b7f2;"></i>
+                     <span class="flex-1 ms-3 whitespace-nowrap" th:text="${full_name}"></span>
+                 </a>
+              </li>
+              <li>
+                 <a th:href="@{/logout}" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                     <i class="fa-solid fa-right-from-bracket fa-lg" style="color: #69b7f2;"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                 </a>
+              </li>
+           </ul>
+        </div>
+     </aside>
+    <!-- Main modal -->
+    <div id="create-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-sky-900">
+                    <h3 class="text-lg font-semibold text-sky-900">
+                        Create New Account
+                    </h3>
+                    <button type="button" class="text-blue-900 bg-transparent hover:bg-blue-900 hover:text-white rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="create-modal">
+                        <i class="fa-regular fa-circle-xmark fa-xl"></i>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form th:action="@{/home/addApplication}"
+                    th:object="${addApplicationForm}"
+                    method="POST"
+                    class="p-4 md:p-5">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="username" class="block mb-2 text-sm font-medium text-sky-900">Username</label>
+                            <input type="text" th:field="*{username}" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="Type product name" required="">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="password" class="block mb-2 text-sm font-medium text-sky-900">Password</label>
+                            <input type="text" th:field="*{password}" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="Type password" required>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="application_name" class="block mb-2 text-sm font-medium text-sky-900">Application</label>
+                            <input type="text" th:field="*{applicationName}" id="application_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="Type application name" required>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="url" class="block mb-2 text-sm font-medium text-sky-900">URL</label>
+                            <input type="text" th:field="*{url}" id="url" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="https://..." required>
+                        </div>
+                    </div>
+                    <button type="submit" class="text-sky-900 inline-flex items-center bg-gray-50 border-2 border-sky-900 hover:bg-sky-900 hover:text-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        <i class="fa-solid fa-plus fa-sm mr-4"></i>
+                        Add new account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div> 
+<script src="https://flowbite.com/docs/flowbite.min.js"></script>
+</body>
+</html>
