@@ -4,17 +4,44 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>    
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
     <title>Sign Up</title>
 </head>
 <body>
-<form th:action="@{/register}"
-      th:object="${registerForm}"
-      method="post">
-    <label for="username">Username</label>
-    <input type="text" th:field="*{username}" id="username"><br>
-    <label for="password">Password</label>
-    <input type="password" th:field="*{password}" id="password"><br>
-    <button type="submit">Submit</button>
-</form>
+<div class="flex flex-col items-start mx-4 my-8">
+    <div class="w-1/3 flex flex-col justify-center items-center py-2 mb-2 shadow-gray-500/50 shadow-md bg-gray-100">
+        <img class="h-14" th:src="@{/images/logo.png}" alt="logo">
+        <h1 class="text-2xl font-semibold text-gray-500">Password Manager</h1>
+        <h1 class="font-light">Building a second brain</h1>
+    </div>
+    <form class="w-1/3 flex flex-col items-start p-4 pb-8 shadow-gray-500/50 shadow-md bg-gray-100" 
+        th:object="${registerForm}"
+        th:action="@{/register}" 
+        method="post">
+        <div class="flex flex-col m-2 w-3/4 gap-2">
+            <label class="my-2 text-gray-700 font-semibold" for="full_name">Full name</label>
+            <input class="p-2 rounded-lg border border-gray-50 shadow-md focus:outline-none text-gray-700 placeholder:text-slate-500" type="text" th:field="*{fullName}" id="full_name" placeholder="Johny Sin">
+            <label class="my-2 text-gray-700 font-semibold" for="username">Username</label>
+            <input class="p-2 rounded-lg border border-gray-50 shadow-md focus:outline-none text-gray-700 placeholder:text-slate-500" type="text" th:field="*{username}" id="username" placeholder="your-username">
+            <label class="my-2 text-gray-700 font-semibold" for="password">Password</label>
+            <input class="p-2 rounded-lg border border-gray-50 shadow-md focus:outline-none text-gray-700" type="password" th:field="*{password}" id="password" placeholder="••••••••">
+        </div>
+        <h1 id="error" class="text-sm font-semibold text-red-400"></h1>
+        <button class="my-4 p-2 rounded-lg self-center w-full
+        text-sm text-white font-semibold
+        bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-500 hover:to-blue-500
+        shadow-blue-500/50 shadow-md" type="submit">Sign In</button>
+        <h1 class="text-sm">Already have an account?
+            <span><a class="underline underline-offset-2 text-blue-400" th:href="@{/login}">Sign In</a></span>
+        </h1>
+    </form>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('error'))
+            document.getElementById("error").innerHTML = "Username has already been registered!";
+    </script>
+</div>
 </body>
 </html>

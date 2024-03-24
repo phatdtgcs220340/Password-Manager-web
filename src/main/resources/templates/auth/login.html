@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>    
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
     <title>Sign In</title>
 </head>
 <body>
-
+<div class="flex flex-col items-start mx-4 my-8">
+    <div class="w-1/3 flex flex-col justify-center items-center py-2 mb-2 shadow-gray-500/50 shadow-md bg-gray-100">
+        <img class="h-14" th:src="@{/images/logo.png}" alt="logo">
+        <h1 class="text-2xl font-semibold text-gray-500">Password Manager</h1>
+        <h1 class="font-light">Building a second brain</h1>
+    </div>
+    <form class="w-1/3 flex flex-col items-start p-4 pb-8 shadow-gray-500/50 shadow-md bg-gray-100" th:action="@{/login/authenticate}" method="post">
+        <div class="flex flex-col m-2 w-3/4 gap-2">
+            <label class="my-2 text-gray-700 font-semibold" for="username">Username</label>
+            <input class="p-2 rounded-lg border border-gray-50 shadow-md focus:outline-none text-gray-700 placeholder:text-slate-500" type="text" name="username" id="username" placeholder="your-username">
+            <label class="my-2 text-gray-700 font-semibold" for="password">Password</label>
+            <input class="p-2 rounded-lg border border-gray-50 shadow-md focus:outline-none text-gray-700" type="password" name="password" id="password" placeholder="••••••••">
+        </div>
+        <h1 id="error" class="text-sm font-semibold text-red-400"></h1>
+        <button class="my-4 p-2 rounded-lg self-center w-full
+        text-sm text-white font-semibold
+        bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-500 hover:to-blue-500
+        shadow-blue-500/50 shadow-md" type="submit">Sign In</button>
+        <h1 class="text-sm">Haven't have an account yet? 
+            <span><a class="underline underline-offset-2 text-blue-400" th:href="@{/register}">Sign Up</a></span>
+        </h1>
+    </form>
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('error'))
+            document.getElementById("error").innerHTML = "authentication failed";
+    </script>
+</div>
 </body>
 </html>
