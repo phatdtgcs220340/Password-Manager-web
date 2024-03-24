@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.phatdo.passwordmanager.Entity.Application.Application;
-import com.phatdo.passwordmanager.Entity.UserApplication.UserApplication;
+import com.phatdo.passwordmanager.Entity.Account.Account;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -32,10 +32,10 @@ public class User implements UserDetails, Serializable {
     @Column(name = "password")
     private final String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserApplication> userApplications = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
     public Set<Application> getApplications() {
-        return this.userApplications.stream()
-                .map(UserApplication::getApplication)
+        return this.accounts.stream()
+                .map(Account::getApplication)
                 .collect(Collectors.toSet());
     }
 
