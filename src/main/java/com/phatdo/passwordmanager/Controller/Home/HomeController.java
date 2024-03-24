@@ -1,8 +1,8 @@
 package com.phatdo.passwordmanager.Controller.Home;
 
-import com.phatdo.passwordmanager.Entity.Application.Application;
+import com.phatdo.passwordmanager.Entity.Account.AccountService;
+import com.phatdo.passwordmanager.Entity.Application.ApplicationService;
 import com.phatdo.passwordmanager.Entity.User.User;
-import com.phatdo.passwordmanager.Entity.User.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.stream.Collectors;
-
 @Slf4j
 @Controller
 @RequestMapping("/home")
 public class HomeController {
-    private UserService userService;
+    private AccountService accountService;
+    private ApplicationService applicationService;
     @Autowired
-    public HomeController(UserService userService) {
-        this.userService = userService;
+    public HomeController(ApplicationService applicationService, AccountService accountService) {
+        this.accountService = accountService;
+        this.applicationService = applicationService;
     }
     @ModelAttribute(name = "addApplicationForm")
     public AddApplicationForm addApplicationForm() {
@@ -31,13 +31,13 @@ public class HomeController {
     @GetMapping()
     public String home(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("full_name", user.getFullName());
-        model.addAttribute("application_list", userService.listApplication(user));
+        model.addAttribute("application_list", applicationService.listApplication(user));
         return "home/home";
     }
     @PostMapping("/addApplication")
     public String addApplication(@AuthenticationPrincipal User user,
                                  @ModelAttribute AddApplicationForm addApplicationForm) {
-        userService.addApplication(user, addApplicationForm.toApplication());
+        accountService.addApplication(addApplicationForm.toAccount(user));
         return "redirect:/home";
     }
 }
