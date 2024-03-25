@@ -31,14 +31,20 @@
                     </button>
                   </li>
                   <li>
-                     <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                     <button id="dropdown-application" type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-gray-700" aria-controls="dropdown-application-list" data-collapse-toggle="dropdown-application-list">
                          <i class="fa-solid fa-list fa-lg" style="color: #74C0FC;"></i>
                          <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Applications</span>
                          <i class="fa-solid fa-caret-down fa-sm" style="color: #74C0FC;"></i>
                      </button>
-                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                     <ul id="dropdown-application-list" class="hidden py-2 space-y-2">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <i class="fa-solid fa-magnifying-glass" style="color: #74C0FC;"></i>
+                                </div>
+                                <input type="search" id="search-bar" oninput="search()" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 focus outline-none" placeholder="Search Application"/>
+                            </div>
                            <li class="list-item" th:each="item : ${application_list}">
-                              <a th:href="${item.getRedirectURL()}" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:bg-gray-700">
+                              <a th:id="application + ${item.id}" th:href="${item.getRedirectURL()}" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:bg-gray-700">
                                   <i class="fa-solid fa-circle fa-2xs" style="color: #74C0FC;"></i>
                                   <span class="mx-4" th:text="${item.applicationName}"></span></a>
                            </li>
@@ -174,6 +180,17 @@
         }
     </script>
     <script th:src="@{/scripts/get-request-param.js}"></script>
+    <script>
+        if (getRequestParam("applicationId") != null) {
+            const button = document.getElementById("dropdown-application");
+            const list = document.getElementById("dropdown-application-list");
+            const target = document.getElementById("application"+getRequestParam("applicationId"));
+            button.setAttribute("aria-expanded", true);
+            list.classList.remove("hidden");
+            target.classList.add("bg-gray-700")
+        }
+    </script>
+    <script th:src="@{/scripts/find-application.js}"></script>
     <script th:src="@{/scripts/password-generate.js}"></script>
     <script src="https://flowbite.com/docs/flowbite.min.js"></script>
 </body>
