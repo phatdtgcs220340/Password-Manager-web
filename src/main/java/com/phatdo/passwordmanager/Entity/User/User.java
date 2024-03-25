@@ -1,6 +1,5 @@
 package com.phatdo.passwordmanager.Entity.User;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "\"user\"")
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
-public class User implements UserDetails, Serializable {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
