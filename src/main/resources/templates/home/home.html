@@ -6,59 +6,106 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/80b0eecad5.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
     <title>Home</title>
 </head>
 <body>
-    <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-        <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-        </svg>
-     </button>
-     
-     <aside id="sidebar-multi-level-sidebar" class="shadow-lg shadow-indigo-500 fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-600">
-            <a th:href="@{/}" class="w-full flex flex-wrap rounded-lg justify-center items-center p-2 px-1 mb-2 gap-1 hover:bg-gray-700">
-                <img class="h-12" th:src="@{/images/logo.png}" alt="logo">
-                <h1 class="text-xl font-semibold text-gray-50">Password Manager</h1>
-            </a>
-           <ul class="space-y-2 font-medium">
-              <li>
-                <button data-modal-target="create-modal" data-modal-toggle="create-modal" href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
-                    <i class="fa-solid fa-file-circle-plus fa-lg" style="color: #69b7f2;"></i>
-                    <span class="ms-3">New Application</span>
-                </button>
-                 
-              </li>
-              <li>
-                 <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                     <i class="fa-solid fa-list fa-lg" style="color: #69b7f2;"></i>
-                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Applications</span>
-                     <i class="fa-solid fa-caret-down fa-sm" style="color: #69b7f2;"></i>
-                 </button>
-                 <ul id="dropdown-example" class="hidden py-2 space-y-2">
-                       <li class="list-item" th:each="item : ${application_list}">
-                          <a th:href="${item.url}" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:bg-gray-700">
-                              <i class="fa-solid fa-circle fa-2xs" style="color: #69b7f2;"></i>
-                              <span class="mx-4" th:text="${item.applicationName}"></span></a>
-                       </li>
-                 </ul>
-              </li>
-              <li>
-                 <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
-                     <i class="fa-solid fa-user fa-lg" style="color: #69b7f2;"></i>
-                     <span class="flex-1 ms-3 whitespace-nowrap" th:text="${full_name}"></span>
-                 </a>
-              </li>
-              <li>
-                 <a th:href="@{/logout}" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
-                     <i class="fa-solid fa-right-from-bracket fa-lg" style="color: #69b7f2;"></i>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
-                 </a>
-              </li>
-           </ul>
+    <div class="relative bg-gray-100">
+        <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <span class="sr-only">Open sidebar</span>
+            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+            </svg>
+        </button>
+        <aside id="sidebar-multi-level-sidebar" class="shadow-lg shadow-indigo-500 fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <div class="h-full px-3 py-4 overflow-y-auto bg-gray-600">
+                <a th:href="@{/}" class="w-full flex flex-wrap rounded-lg justify-center items-center p-2 px-1 mb-2 gap-1 hover:bg-gray-700">
+                    <img class="h-12" th:src="@{/images/logo.png}" alt="logo">
+                    <h1 class="text-xl font-semibold text-gray-50">Password Manager</h1>
+                </a>
+               <ul class="space-y-2 font-medium">
+                  <li>
+                    <button data-modal-target="create-modal" data-modal-toggle="create-modal" href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                        <i class="fa-solid fa-file-circle-plus fa-lg" style="color: #74C0FC;"></i>
+                        <span class="ms-3">New Application</span>
+                    </button>
+                  </li>
+                  <li>
+                     <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                         <i class="fa-solid fa-list fa-lg" style="color: #74C0FC;"></i>
+                         <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Applications</span>
+                         <i class="fa-solid fa-caret-down fa-sm" style="color: #74C0FC;"></i>
+                     </button>
+                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                           <li class="list-item" th:each="item : ${application_list}">
+                              <a th:href="${item.getRedirectURL()}" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:bg-gray-700">
+                                  <i class="fa-solid fa-circle fa-2xs" style="color: #74C0FC;"></i>
+                                  <span class="mx-4" th:text="${item.applicationName}"></span></a>
+                           </li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                         <i class="fa-solid fa-user fa-lg" style="color: #74C0FC;"></i>
+                         <span class="flex-1 ms-3 whitespace-nowrap" th:text="${full_name}"></span>
+                     </a>
+                  </li>
+                  <li>
+                     <a th:href="@{/logout}" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                         <i class="fa-solid fa-right-from-bracket fa-lg" style="color: #74C0FC;"></i>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                     </a>
+                  </li>
+               </ul>
+            </div>
+        </aside>
+        <div class="p-4 sm:ml-64">
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+                <div class="bg-gray-600 rounded-lg p-4">
+
+                    <div th:object="${accountInfo}">
+                        <div th:if="${accountInfo.getApplication() != null}">
+                            <a th:href="${accountInfo.getApplication().getUrl()}" th:text="${accountInfo.getApplication().applicationName}" class="text-2xl font-semibold text-gray-50 underline underline-offset-2 hover:text-blue-400">Facebook</a>
+                        </div>
+                        <div class="flex flex-col my-5">
+                            <label for="account_username" class="text-gray-50 font-semibold mb-2">Username:</label>
+                            <input type="text" id="account_username" th:value="${accountInfo.username}" class="bg-gray-50 w-1/2 p-2 rounded-lg focus:outline-none" disabled>
+                        </div>
+                        <div class="flex flex-col">
+                            <label for="account_password" class="block text-gray-50 font-semibold mb-2">Password:
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="account_password" th:value="${accountInfo.password}" class="block bg-gray-50 w-1/2 p-2 rounded-lg focus:outline-none" disabled>
+                                <button onclick="hideOrDisplayPassword('account_password')" class="absolute inset-y-0 left-12 w-5/6">
+                                    <i class="fa-solid fa-eye-low-vision fa-lg" style="color: #74C0FC;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="bg-green-400 py-2 px-4 my-2 rounded-lg hover:bg-green-600">
+                                <i class="fa-solid fa-arrow-up-from-bracket fa-bounce" style="color: #000000; --fa-animation-duration: 2s;"></i>
+                                <span class="text-gray-900 font-semibold">Update password</span>
+                            </button>
+                            <form th:action="@{/home/delete}"
+                                  th:method="delete">
+                                <!-- surround input by condition checking prevent null Account  -->
+                                <div th:if="${accountInfo.getApplication() != null}">
+                                    <input type="hidden" name="accountId" th:value="${accountInfo.id}">
+                                </div>
+                                <button type="submit" class="bg-red-400 py-2 px-4 my-2 rounded-lg hover:bg-red-600">
+                                    <i class="fa-solid fa-trash fa-shake" style="color: #ffffff; --fa-animation-duration: 2s;"></i>
+                                    <span class="text-white font-semibold">Delete</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-     </aside>
+        <div class="h-96">
+
+        </div>
+    </div>
     <!-- Main modal -->
     <div id="create-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -82,11 +129,21 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="username" class="block mb-2 text-sm font-medium text-sky-900">Username</label>
-                            <input type="text" th:field="*{username}" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="Type product name" required="">
+                            <input type="text" th:field="*{username}" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" required="">
                         </div>
                         <div class="col-span-2">
-                            <label for="password" class="block mb-2 text-sm font-medium text-sky-900">Password</label>
-                            <input type="text" th:field="*{password}" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="Type password" required>
+                            <label for="password" class="block text-sm font-medium text-sky-900">
+                                Password
+                                <div class="relative">
+                                    <input type="password" th:field="*{password}" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="••••••••" required>
+                                    <button type="button" onclick="hideOrDisplayPassword('password')" class="absolute inset-y-0 right-0 pr-2">
+                                        <i class="fa-solid fa-eye-low-vision fa-lg"></i>
+                                    </button>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-span-2">
+                            <button onclick="generateAndFillPassword()" class="underline underline-offset-2 text-sm text-blue-400">Generate password</button>
                         </div>
                         <div class="col-span-2 sm:col-span-1">
                             <label for="application_name" class="block mb-2 text-sm font-medium text-sky-900">Application</label>
@@ -104,7 +161,20 @@
                 </form>
             </div>
         </div>
-    </div> 
-<script src="https://flowbite.com/docs/flowbite.min.js"></script>
+    </div>
+    <script>
+        function hideOrDisplayPassword(field) {
+            const password = document.getElementById(field);
+            if (password.getAttribute("type") === "password") {
+                password.setAttribute("type", "text")
+            }
+            else {
+                password.setAttribute("type", "password")
+            }
+        }
+    </script>
+    <script th:src="@{/scripts/get-request-param.js}"></script>
+    <script th:src="@{/scripts/password-generate.js}"></script>
+    <script src="https://flowbite.com/docs/flowbite.min.js"></script>
 </body>
 </html>
