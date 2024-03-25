@@ -14,6 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Data
+@Table(name = "\"account\"")
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 public class Account implements Serializable {
@@ -38,9 +39,4 @@ public class Account implements Serializable {
     @ManyToOne
     @JoinColumn(name = "application_id")
     private Application application;
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, application);
-    }
 }
