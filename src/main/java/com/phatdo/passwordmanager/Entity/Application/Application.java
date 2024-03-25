@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="\"application\"")
+@Table(name = "\"application\"")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
@@ -29,9 +29,18 @@ public class Application implements Serializable {
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts = new HashSet<>();
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, applicationName, url);
+    public String getRedirectURL() {
+        return String.format("?applicationId=%d", this.id);
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        return this.id == ((Application) o).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getClass());
+    }
 }

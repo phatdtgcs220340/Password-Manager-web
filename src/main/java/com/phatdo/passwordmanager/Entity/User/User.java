@@ -33,6 +33,7 @@ public class User implements UserDetails, Serializable {
     private final String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts = new HashSet<>();
+
     public Set<Application> getApplications() {
         return this.accounts.stream()
                 .map(Account::getApplication)
@@ -75,7 +76,13 @@ public class User implements UserDetails, Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+
+        return this.id == ((User) o).getId();
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(id, fullName, username, password);
+        return Objects.hashCode(getClass());
     }
 }
