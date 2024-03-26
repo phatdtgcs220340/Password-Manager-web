@@ -5,6 +5,7 @@ import com.phatdo.passwordmanager.Entity.Account.AccountService;
 import com.phatdo.passwordmanager.Entity.Application.ApplicationService;
 import com.phatdo.passwordmanager.Entity.User.User;
 import com.phatdo.passwordmanager.Exception.AccountExistedException;
+import com.phatdo.passwordmanager.Exception.AccountNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,18 @@ public class HomeController {
             return "redirect:/home?error=accountExisted";
         }
         return "redirect:/home";
+    }
+
+    @PatchMapping("/updateApplication")
+    public String updateApplication(@AuthenticationPrincipal User user,
+            @RequestParam(name = "accountId") Integer accountId,
+            @RequestParam(name = "newPassword") String newPassword) {
+        try {
+            accountService.updateAccount(accountId, newPassword);
+        } catch (AccountNotFoundException e) {
+            return "redirect:/home?error=accountNotFound";
+        }
+        return String.format("redirect:/home?accountId=%d", accountId);
     }
 
     @DeleteMapping("/delete")

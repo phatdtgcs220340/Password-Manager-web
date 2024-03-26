@@ -5,7 +5,7 @@ import com.phatdo.passwordmanager.Entity.Application.ApplicationRepository;
 import com.phatdo.passwordmanager.Entity.User.User;
 import com.phatdo.passwordmanager.Entity.User.UserRepository;
 import com.phatdo.passwordmanager.Exception.AccountExistedException;
-
+import com.phatdo.passwordmanager.Exception.AccountNotFoundException;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +64,14 @@ public class AccountService {
         if (!user.getApplications().contains(application))
             user.getApplications().add(account.getApplication());
         user.getAccounts().add(account);
+    }
+
+    public void updateAccount(Integer accountId, String newPassword) throws AccountNotFoundException {
+        Account account = accountRepository.findById(accountId).orElse(null);
+        if (account == null)
+            throw new AccountNotFoundException();
+        account.setPassword(newPassword);
+        accountRepository.save(account);
     }
 
     @Transactional

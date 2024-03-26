@@ -16,7 +16,8 @@ public class AddApplicationForm {
     private String password;
 
     public Account toAccount(User user) {
-        Account account = new Account(username, password, Timestamp.from(Instant.now()), user);
+        Account account = new Account(username, Timestamp.from(Instant.now()), user);
+        account.setPassword(password);
         account.setApplication(new Application(capitalize(applicationName), url));
         return account;
     }
