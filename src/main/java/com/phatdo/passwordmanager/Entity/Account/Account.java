@@ -26,7 +26,7 @@ public class Account implements Serializable {
     private final String username;
 
     @Column(name = "password")
-    private final String password;
+    private String password;
 
     @Column(name = "last_modified")
     private final Timestamp lastModified;
