@@ -19,7 +19,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -33,8 +35,9 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
                 CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
                 super.onAuthenticationSuccess(request, response, authentication);
                 // save user after authentication
+                log.info("Attempt to save user: " + oAuth2User.getEmail());
                 userService.processOAuthPostLogin(oAuth2User.getEmail(), oAuth2User.getName());
-
+                handle(request, response, authentication);
         }
 
         protected void handle(
@@ -68,4 +71,5 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
                 throw new IllegalStateException();
         }
+
 }
