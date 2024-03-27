@@ -80,15 +80,20 @@
                         <div class="flex flex-col">
                             <label for="account_password" class="block text-gray-50 font-semibold mb-2">Password:
                             </label>
-                            <div class="relative">
+                            <div class="flex gap-2">
                                 <input type="password" id="account_password" th:value="${accountInfo.password}" class="block bg-gray-50 w-1/2 p-2 rounded-lg focus:outline-none" disabled>
-                                <button onclick="hideOrDisplayPassword('account_password')" class="absolute inset-y-0 left-12 w-5/6">
+                                <button onclick="hideOrDisplayPassword('account_password')" class="hover:bg-gray-500 rounded-full p-2">
                                     <i class="fa-solid fa-eye-low-vision fa-lg" style="color: #74C0FC;"></i>
                                 </button>
                             </div>
                         </div>
+                        <form id="update-form" onsubmit="return fillUpdateForm()" class="hidden" th:action="@{/home/updateApplication}" th:method="patch">
+                            <input type="hidden" name="newPassword" id="newPassword">
+                            <input type="hidden" name="accountId" th:value="${accountInfo.id}">
+                            <button class="mt-2 py-1 px-3 border-2 rounded-lg border-gray-900 bg-gray-50 font-semibold hover:bg-gray-900 hover:text-gray-50 " type="submit">Save</button>
+                        </form>
                         <div class="flex gap-2">
-                            <button class="bg-green-400 py-2 px-4 my-2 rounded-lg hover:bg-green-600">
+                            <button id="update-button" onclick="triggerUpdateButton()" class="bg-green-400 py-2 px-4 my-2 rounded-lg hover:bg-green-600">
                                 <i class="fa-solid fa-arrow-up-from-bracket fa-bounce" style="color: #000000; --fa-animation-duration: 2s;"></i>
                                 <span class="text-gray-900 font-semibold">Update password</span>
                             </button>
@@ -140,13 +145,13 @@
                         <div class="col-span-2">
                             <label for="password" class="block text-sm font-medium text-sky-900">
                                 Password
-                                <div class="relative">
-                                    <input type="password" th:field="*{password}" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="••••••••" required>
-                                    <button type="button" onclick="hideOrDisplayPassword('password')" class="absolute inset-y-0 right-0 pr-2">
-                                        <i class="fa-solid fa-eye-low-vision fa-lg"></i>
-                                    </button>
-                                </div>
                             </label>
+                            <div class="flex gap-2">
+                                <input type="password" th:field="*{password}" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5" placeholder="••••••••" required>
+                                <button type="button" onclick="hideOrDisplayPassword('password')" class="text-gray-300 hover:bg-gray-500 rounded-full p-2">
+                                    <i class="fa-solid fa-eye-low-vision fa-lg"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-span-2">
                             <button onclick="generateAndFillPassword()" class="underline underline-offset-2 text-sm text-blue-400">Generate password</button>
@@ -188,6 +193,29 @@
             button.setAttribute("aria-expanded", true);
             list.classList.remove("hidden");
             target.classList.add("bg-gray-700")
+        }
+    </script>
+    <script>
+        const password = document.getElementById("account_password");
+        const originPasswordValue = password.value;
+        const updateForm = document.getElementById("update-form");
+        function triggerUpdateButton() {
+            if (password.hasAttribute("disabled")) {
+                password.removeAttribute("disabled");
+                updateForm.classList.remove("hidden");
+            }
+            else {
+                password.setAttribute("disabled","");
+                password.value = originPasswordValue;
+                updateForm.classList.add("hidden");
+            }
+        };
+        function fillUpdateForm() {
+            if (password.value != originPasswordValue) 
+                document.getElementById("newPassword").value = password.value;
+            else
+                return false;
+            return true;
         }
     </script>
     <script th:src="@{/scripts/find-application.js}"></script>
