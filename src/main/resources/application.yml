@@ -7,5 +7,17 @@ spring:
     password: bimatnha
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: {clientId}
+            client-secret: {clientSecret}
+            redirect-uri: http://localhost:8080/{callback}
+            scope:
+              - email
+              - profile 
+              - openid
