@@ -57,10 +57,11 @@
                      </a>
                   </li>
                   <li>
-                     <a th:href="@{/logout}" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
-                         <i class="fa-solid fa-right-from-bracket fa-lg" style="color: #74C0FC;"></i>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
-                     </a>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-gray-700 group">
+                            <i class="fa-solid fa-right-from-bracket fa-lg" style="color: #74C0FC;"></i>
+                           <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span></button>
+                    </form>
                   </li>
                </ul>
             </div>
