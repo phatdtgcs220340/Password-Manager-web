@@ -6,8 +6,8 @@ This project is a password manager application developed using Spring Boot, Spri
 
 Before running the project, ensure you have the following prerequisites installed:
 
-1. **Java Development Kit (JDK) 21:** 
-   - Install the JDK 21 from the official Oracle website or any other trusted source.
+1. **Java Development Kit (JDK) 17:** 
+   - Install the JDK 17 from the official Oracle website or any other trusted source.
 
 2. **Gradle:**
    - You can install Gradle manually or use a build tool like SDKMAN! for managing your development environment. Here's how to install it manually:
