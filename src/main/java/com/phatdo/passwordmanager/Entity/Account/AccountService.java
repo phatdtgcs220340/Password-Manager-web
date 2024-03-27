@@ -66,11 +66,16 @@ public class AccountService {
         user.getAccounts().add(account);
     }
 
-    public void updateAccount(Integer accountId, String newPassword) throws AccountNotFoundException {
+    public void updateAccount(User user, Integer accountId, String newPassword) throws AccountNotFoundException {
         Account account = accountRepository.findById(accountId).orElse(null);
         if (account == null)
             throw new AccountNotFoundException();
+        Application application = account.getApplication();
+        application.getAccounts().remove(account);
+        user.getAccounts().remove(account);
         account.setPassword(newPassword);
+        application.getAccounts().add(account);
+        user.getAccounts().add(account);
         accountRepository.save(account);
     }
 

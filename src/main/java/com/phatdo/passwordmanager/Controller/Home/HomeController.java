@@ -66,11 +66,11 @@ public class HomeController {
             @RequestParam(name = "accountId") Integer accountId,
             @RequestParam(name = "newPassword") String newPassword) {
         try {
-            accountService.updateAccount(accountId, newPassword);
+            accountService.updateAccount(user, accountId, newPassword);
         } catch (AccountNotFoundException e) {
             return "redirect:/home?error=accountNotFound";
         }
-        return String.format("redirect:/home?accountId=%d", accountId);
+        return "redirect:/home";
     }
 
     @DeleteMapping("/delete")
