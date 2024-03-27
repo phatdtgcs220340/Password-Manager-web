@@ -4,7 +4,8 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/80b0eecad5.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
     <title>Sign In</title>
 </head>
@@ -27,6 +28,11 @@
         text-sm text-white font-semibold
         bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-500 hover:to-blue-500
         shadow-blue-500/50 shadow-md" type="submit">Sign In</button>
+        <a class="bg-white my-2 p-2 rounded-lg border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-900 hover:text-white" 
+            th:href="@{/oauth2/authorization/github}">
+            <i class="fa-brands fa-github fa-xl"></i>
+            <span>Sign In with Github</span>
+        </a>
         <h1 class="text-sm">Haven't have an account yet? 
             <span><a class="underline underline-offset-2 text-blue-400" th:href="@{/register}">Sign Up</a></span>
         </h1>
