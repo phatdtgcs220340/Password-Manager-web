@@ -8,9 +8,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+
+import com.phatdo.passwordmanager.Entity.User.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,22 +20,24 @@ import lombok.extern.slf4j.Slf4j;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
-        @Autowired
         private OAuth2SuccessHandler oAuth2SuccessHandler;
+        private UserService userService;
+
+        @Autowired
+        public SecurityConfig(OAuth2SuccessHandler oauth2SuccessHandler, UserService userService) {
+                this.oAuth2SuccessHandler = oauth2SuccessHandler;
+                this.userService = userService;
+        }
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http
-                                .authorizeHttpRequests((auth) -> auth
-                                                .requestMatchers("/home", "/home/**").hasAuthority("ROLE_USER")
-                                                .requestMatchers("/", "/**").permitAll()
-                                                .anyRequest().authenticated())
-                                .oauth2Login(oauth2 -> oauth2
-                                                .loginPage("/login")
-                                                .loginProcessingUrl("/oauth/authorization/{registerationId}")
-                                                .redirectionEndpoint(endpoint -> endpoint
-                                                                .baseUri("/login/oauth2/code/{registerationId}"))
-                                                .successHandler(oAuth2SuccessHandler))
+                http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                                .requestMatchers("/home", "home**").hasAuthority("ROLE_USER")
+                                .requestMatchers("/", "/**").permitAll()
+                                .anyRequest().authenticated())
+                                .oauth2Login(oauth2 -> {
+                                        oauth2.successHandler(oAuth2SuccessHandler);
+                                })
                                 .exceptionHandling(e -> e
                                                 .authenticationEntryPoint(
                                                                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
@@ -47,4 +50,5 @@ public class SecurityConfig {
                                 .csrf(AbstractHttpConfigurer::disable);
                 return http.build();
         }
+
 }

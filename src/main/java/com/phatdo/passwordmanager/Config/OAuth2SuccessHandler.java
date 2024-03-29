@@ -1,5 +1,6 @@
 package com.phatdo.passwordmanager.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,22 +23,24 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+        @Autowired
         private UserRepository userRepository;
 
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                         Authentication authentication) throws ServletException, IOException {
+                System.out.println("Chay duoc successHandler roi ne");
                 OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-                if ("github".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())) {
+                if ("google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())) {
                         DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
                         Map<String, Object> attributes = principal.getAttributes();
                         String email = attributes.getOrDefault("email", "").toString();
                         String name = attributes.getOrDefault("name", "").toString();
-                        userRepository.findByUsername(email)
+                        userRepository.findByEmail(email)
                                         .ifPresentOrElse(user -> {
                                                 DefaultOAuth2User newUser = new DefaultOAuth2User(
                                                                 List.of(new SimpleGrantedAuthority("ROLE_USER")),
-                                                                attributes, "id");
+                                                                attributes, "sub");
                                                 Authentication securityAuth = new OAuth2AuthenticationToken(newUser,
                                                                 List.of(new SimpleGrantedAuthority("ROLE_USER")),
                                                                 oAuth2AuthenticationToken
@@ -49,7 +52,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
                                                 userRepository.save(userEntity);
                                                 DefaultOAuth2User newUser = new DefaultOAuth2User(
                                                                 List.of(new SimpleGrantedAuthority("ROLE_USER")),
-                                                                attributes, "id");
+                                                                attributes, "sub");
                                                 Authentication securityAuth = new OAuth2AuthenticationToken(newUser,
                                                                 List.of(new SimpleGrantedAuthority("ROLE_USER")),
                                                                 oAuth2AuthenticationToken
