@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.phatdo.passwordmanager.Config.Security.CustomOAuth2.CustomOAuth2User;
 
-import jakarta.transaction.Transactional;
-
 @Service
-@Transactional
 public class UserService extends DefaultOAuth2UserService {
 
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
@@ -25,7 +22,7 @@ public class UserService extends DefaultOAuth2UserService {
         this.repo = userRepository;
     }
 
-    public User getUser(CustomOAuth2User oAuth2User) throws Exception {
+    public User getUser(CustomOAuth2User oAuth2User) throws UsernameNotFoundException {
         String email = oAuth2User.getEmail();
         logger.info("Attempting to retrieve user with email: " + email);
 
