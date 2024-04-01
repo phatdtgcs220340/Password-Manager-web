@@ -12,11 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import com.phatdo.passwordmanager.Config.Security.CustomOAuth2.CustomOAuth2UserService;
-import com.phatdo.passwordmanager.Entity.User.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
