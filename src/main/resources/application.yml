@@ -13,11 +13,18 @@ spring:
     oauth2:
       client:
         registration:
-          github:
-            client-id: {clientId}
-            client-secret: {clientSecret}
-            redirect-uri: http://localhost:8080/{callback}
+          google:
+            client-id: 137288479135-nqhdl93ll5h2vfq29j79s05r21vi24pl.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
               - email
               - profile 
-              - openid
+        provider: 
+          google:
+            token-uri: https://oauth2.googleapis.com/token
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

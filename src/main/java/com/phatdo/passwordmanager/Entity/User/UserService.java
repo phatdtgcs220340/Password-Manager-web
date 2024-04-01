@@ -4,16 +4,23 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+=======
+>>>>>>> refs/remotes/origin/develop-oauth2
 import org.springframework.stereotype.Service;
 
 import com.phatdo.passwordmanager.Config.Security.CustomOAuth2.CustomOAuth2User;
 
 @Service
+<<<<<<< HEAD
 public class UserService extends DefaultOAuth2UserService {
 
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
+=======
+public class UserService {
+>>>>>>> refs/remotes/origin/develop-oauth2
 
     private UserRepository repo;
 
@@ -36,6 +43,7 @@ public class UserService extends DefaultOAuth2UserService {
         }
     }
 
+<<<<<<< HEAD
     public void processOAuthPostLogin(String email, String name) {
         logger.info("Processing OAuth2 post login for email: " + email);
 
@@ -50,4 +58,6 @@ public class UserService extends DefaultOAuth2UserService {
             logger.info("User already exists with email: " + email);
         }
     }
+=======
+>>>>>>> refs/remotes/origin/develop-oauth2
 }
