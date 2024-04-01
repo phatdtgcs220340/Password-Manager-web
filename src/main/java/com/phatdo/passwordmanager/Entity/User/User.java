@@ -21,17 +21,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-<<<<<<< HEAD
     @Column(name = "name")
     private final String name;
     @Column(name = "email", unique = true)
     private final String email;
-=======
-    @Column(name = "full_name")
-    private final String fullName;
-    @Column(name = "username", unique = true)
-    private final String username;
->>>>>>> refs/remotes/origin/develop-oauth2
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Account> accounts = new HashSet<>();
 
