@@ -7,5 +7,24 @@ spring:
     password: bimatnha
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: {client-id}
+            client-secret: {client-secret}
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - email
+              - profile 
+        provider: 
+          google:
+            token-uri: https://oauth2.googleapis.com/token
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

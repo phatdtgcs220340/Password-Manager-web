@@ -1,9 +1,11 @@
 package com.phatdo.passwordmanager.Controller.Home;
 
+import com.phatdo.passwordmanager.Config.Security.CustomOAuth2.CustomOAuth2User;
 import com.phatdo.passwordmanager.Entity.Account.Account;
 import com.phatdo.passwordmanager.Entity.Account.AccountService;
 import com.phatdo.passwordmanager.Entity.Application.ApplicationService;
 import com.phatdo.passwordmanager.Entity.User.User;
+import com.phatdo.passwordmanager.Entity.User.UserService;
 import com.phatdo.passwordmanager.Exception.AccountExistedException;
 import com.phatdo.passwordmanager.Exception.AccountNotFoundException;
 
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +24,14 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
     private AccountService accountService;
     private ApplicationService applicationService;
+    private UserService userService;
 
     @Autowired
-    public HomeController(ApplicationService applicationService, AccountService accountService) {
+    public HomeController(ApplicationService applicationService, AccountService accountService,
+            UserService userService) {
         this.accountService = accountService;
         this.applicationService = applicationService;
+        this.userService = userService;
     }
 
     @ModelAttribute(name = "addApplicationForm")
@@ -35,25 +41,31 @@ public class HomeController {
 
     @GetMapping()
     public String home(@RequestParam(name = "applicationId", required = false) Integer applicationId,
-            @AuthenticationPrincipal User user, Model model) {
-        if (applicationId != null)
-            try {
+            @AuthenticationPrincipal CustomOAuth2User oAuth2User,
+            Model model) {
+        log.info(oAuth2User.getEmail());
+        try {
+            User user = userService.getUser(oAuth2User);
+            if (applicationId != null) {
                 Account account = accountService.findAccount(user.getId(), applicationId);
                 model.addAttribute("accountInfo", account);
-            } catch (EmptyResultDataAccessException e) {
-                return "redirect:/home?error=userNotFound";
-            }
-        else
-            model.addAttribute("accountInfo", new Account());
-        model.addAttribute("full_name", user.getFullName());
-        model.addAttribute("application_list", applicationService.listApplication(user));
-        return "home/home";
+            } else
+                model.addAttribute("accountInfo", new Account());
+            model.addAttribute("full_name", user.getName());
+            model.addAttribute("application_list", applicationService.listApplication(user));
+            return "home/home";
+        } catch (EmptyResultDataAccessException e) {
+            return "redirect:/home?error=userNotFound";
+        } catch (UsernameNotFoundException e) {
+            return "redirect:/login?error";
+        }
     }
 
     @PostMapping("/addApplication")
-    public String addApplication(@AuthenticationPrincipal User user,
+    public String addApplication(@AuthenticationPrincipal CustomOAuth2User oAuth2User,
             @ModelAttribute AddApplicationForm addApplicationForm) {
         try {
+            User user = userService.getUser(oAuth2User);
             accountService.addApplication(addApplicationForm.toAccount(user));
         } catch (AccountExistedException e) {
             return "redirect:/home?error=accountExisted";
@@ -62,10 +74,11 @@ public class HomeController {
     }
 
     @PatchMapping("/updateApplication")
-    public String updateApplication(@AuthenticationPrincipal User user,
+    public String updateApplication(@AuthenticationPrincipal CustomOAuth2User oAuth2User,
             @RequestParam(name = "accountId") Integer accountId,
             @RequestParam(name = "newPassword") String newPassword) {
         try {
+            User user = userService.getUser(oAuth2User);
             accountService.updateAccount(user, accountId, newPassword);
         } catch (AccountNotFoundException e) {
             return "redirect:/home?error=accountNotFound";
@@ -74,9 +87,10 @@ public class HomeController {
     }
 
     @DeleteMapping("/delete")
-    public String deleteApplication(@AuthenticationPrincipal User user,
+    public String deleteApplication(@AuthenticationPrincipal CustomOAuth2User oAuth2User,
             @RequestParam(name = "accountId") Integer accountId) {
         System.out.println(accountId);
+        User user = userService.getUser(oAuth2User);
         accountService.deleteAssociation(user, accountId);
         user.getApplications().forEach(application -> System.out.println(application.getApplicationName()));
         return "redirect:/home";
